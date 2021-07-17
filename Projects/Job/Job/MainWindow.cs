@@ -5,6 +5,7 @@ using System.Xml;
 using System.Text;
 using System.IO;
 using System.Xml.Xsl;
+using System.Text.RegularExpressions;
 
 public partial class MainWindow : Gtk.Window
 {
@@ -172,7 +173,9 @@ public partial class MainWindow : Gtk.Window
         {
             if (document != null)
             {
-                using (var sw = new StreamWriter(fileDialog.Filename))
+                String name = fileDialog.Filename;
+                if (!endsWith(name, ".xml")) name += ".xml";//it makes saving a bit easier
+                using (var sw = new StreamWriter(name))
                 {
                     document.Save(sw); //but save xml document here
                     sw.Close();
@@ -196,7 +199,9 @@ public partial class MainWindow : Gtk.Window
         {
             if (document != null)
             {
-                using (var sw = new StreamWriter(fileDialog.Filename))
+                String name = fileDialog.Filename;
+                if (!endsWith(name, ".html")) name += ".html";
+                using (var sw = new StreamWriter(name))
                 {
                     String s = makeHtml(); //making html with using xstl
                     sw.WriteLine(s); //write to file
@@ -247,5 +252,11 @@ public partial class MainWindow : Gtk.Window
             store.RemoveNode(chosenNode);
             chosenNode = null;
         }
+    }
+
+    private Boolean endsWith(String value, String end) {
+
+        string pattern = "/.*\\" + end;
+        return Regex.IsMatch(value, pattern);
     }
 }
