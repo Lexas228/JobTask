@@ -15,23 +15,24 @@ public partial class MainWindow : Gtk.Window
     {
         Build();
         document = new XmlDocument();
-        document.Load("help/basic.xml");
-        store = new NodeStore(typeof(Job.TreeNode));
+        document.Load("help/basic.xml"); //load empty xml file with only bookstore tag
+        store = new NodeStore(typeof(Job.TreeNode)); //something like model
         mainTable.NodeStore = store;
-        typeof(NodeView).GetField("store", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(mainTable, store);
+        typeof(NodeView).GetField("store", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(mainTable, store); //strange thing but help to solute broblem with null store
+        //init some cell renderes for cells
         CellRendererText textOfBook = new CellRendererText();
         CellRendererText textOfAuthor = new CellRendererText();
         CellRendererText textOfCategory = new CellRendererText();
         CellRendererText textOfPrice = new CellRendererText();
         CellRendererText textOfYear = new CellRendererText();
         textOfBook.Underline = Pango.Underline.Low;
-
+        //add columns with name
         mainTable.AppendColumn("Книга", textOfBook, "text", 0).Clickable = true;
         mainTable.AppendColumn("Автор", textOfAuthor, "text", 1).Clickable = true;
         mainTable.AppendColumn("Категория", textOfCategory, "text", 2).Clickable = true;
         mainTable.AppendColumn("Цена", textOfPrice, "text", 3).Clickable = true;
         mainTable.AppendColumn("Год", textOfYear, "text", 4).Clickable = true;
-
+        //pretty uncomfortable thing but coudn't think out any better way to add these listeners
         textOfBook.Editable = true;
         textOfBook.Edited += (object o, EditedArgs args) =>
         {
@@ -85,7 +86,6 @@ public partial class MainWindow : Gtk.Window
 
             mainTable.ColumnsAutosize();
         };
-
         mainTable.NodeSelection.Mode = SelectionMode.Single;
         mainTable.Selection.Changed += OnMainTableSelectionChanged;
     }
@@ -96,7 +96,7 @@ public partial class MainWindow : Gtk.Window
         a.RetVal = true;
     }
 
-    protected void OnLoadButtonClicked(object sender, EventArgs e)
+    protected void OnLoadButtonClicked(object sender, EventArgs e) //load file with choser dialog
     {
         FileChooserDialog fileDialog = new FileChooserDialog("Choose file", this,
         FileChooserAction.Open, "Cancel", ResponseType.Cancel,
@@ -108,33 +108,33 @@ public partial class MainWindow : Gtk.Window
         if (fileDialog.Run() == (int)ResponseType.Accept)
         {
             document = new XmlDocument();
-            document.Load(fileDialog.Filename);
-            update();
+            document.Load(fileDialog.Filename); // load documnt
+            update(); //update cells in table
         }
         fileDialog.Destroy();
     }
 
-    void update()
+    void update() //updating cells in table
     {
         if (document != null)
         {
             XmlElement root = document.DocumentElement;
             store.Clear();
-            foreach (XmlNode node in root.ChildNodes)
+            foreach (XmlNode node in root.ChildNodes) //go throw all nodes and add it to store
             {
-                store.AddNode(new Job.TreeNode(node, document));
+                store.AddNode(new Job.TreeNode(node, document)); //node can show the inner of nodes
             }
         }
     }
 
-    protected void OnMainTableSelectionChanged(object o, System.EventArgs args)
+    protected void OnMainTableSelectionChanged(object o, System.EventArgs args)//remember the chosen node to removing
     {
         chosenNode = (Job.TreeNode)mainTable.NodeSelection.SelectedNode;
     }
 
     protected void OnAddButtonClicked(object sender, EventArgs e)
     {
-        List<XmlNode> nodes = new List<XmlNode>();
+        List<XmlNode> nodes = new List<XmlNode>(); //create new empty node of book
         XmlNode n = document.CreateNode("element", "book", "");
         XmlAttribute atr = document.CreateAttribute("category");
         n.Attributes.Append(atr);
@@ -151,7 +151,7 @@ public partial class MainWindow : Gtk.Window
         nodes.Add(title);
         nodes.Add(year);
         nodes.Add(price);
-        foreach (XmlNode xm in nodes)
+        foreach (XmlNode xm in nodes) //I think there is better method of creating node than this one but anyway..
         {
             n.AppendChild(xm);
         }
@@ -159,7 +159,7 @@ public partial class MainWindow : Gtk.Window
         store.AddNode(new Job.TreeNode(n, document));
     }
 
-    protected void OnSaveButtonClicked(object sender, EventArgs e)
+    protected void OnSaveButtonClicked(object sender, EventArgs e) //like loading
     {
         FileChooserDialog fileDialog = new FileChooserDialog("Choose file", this,
         FileChooserAction.Save, "Cancel", ResponseType.Cancel,
@@ -174,7 +174,7 @@ public partial class MainWindow : Gtk.Window
             {
                 using (var sw = new StreamWriter(fileDialog.Filename))
                 {
-                    document.Save(sw);
+                    document.Save(sw); //but save xml document here
                     sw.Close();
                 }
             }
@@ -198,9 +198,8 @@ public partial class MainWindow : Gtk.Window
             {
                 using (var sw = new StreamWriter(fileDialog.Filename))
                 {
-                    String s = makeHtml();
-                    sw.WriteLine(s);
-                    Console.WriteLine(s);
+                    String s = makeHtml(); //making html with using xstl
+                    sw.WriteLine(s); //write to file
                     sw.Close();
 
                 }
@@ -213,7 +212,7 @@ public partial class MainWindow : Gtk.Window
     private String makeHtml()
     {
         XslCompiledTransform transform = new XslCompiledTransform();
-        string xsltString = File.ReadAllText("help/transform.xsl");
+        string xsltString = File.ReadAllText("help/transform.xsl"); //load xstl file from help folder
         using (XmlReader reader = XmlReader.Create(new StringReader(xsltString)))
         {
             transform.Load(reader);
@@ -221,7 +220,7 @@ public partial class MainWindow : Gtk.Window
         StringWriter results = new StringWriter();
         using (XmlReader reader = XmlReader.Create(new StringReader(document.InnerXml)))
         {
-            transform.Transform(reader, null, results);
+            transform.Transform(reader, null, results); //transform it to html text
         }
         return results.ToString();
     }
@@ -232,7 +231,7 @@ public partial class MainWindow : Gtk.Window
         {
             using (var sw = new StreamWriter("tmp/tmpFile.html"))
             {
-                String s = makeHtml();
+                String s = makeHtml(); //making html and open it in browser
                 sw.WriteLine(s);
                 sw.Close();
                 System.Diagnostics.Process.Start("tmp/tmpFile.html");
@@ -241,7 +240,7 @@ public partial class MainWindow : Gtk.Window
 
     }
 
-    protected void OnRemoveButtonClicked(object sender, EventArgs e)
+    protected void OnRemoveButtonClicked(object sender, EventArgs e)//removing chosen node
     {
         if(document != null && chosenNode != null) {
             document.DocumentElement.RemoveChild(chosenNode.rootNode);
