@@ -1,0 +1,6 @@
+/home/limon/Projects/Job/Job/obj/x86/Debug/Job.csproj.CoreCompileInputs.cache
+/home/limon/Projects/Job/Job/bin/Debug/Job.exe
+/home/limon/Projects/Job/Job/bin/Debug/Job.pdb
+/home/limon/Projects/Job/Job/obj/x86/Debug/Job.exe
+/home/limon/Projects/Job/Job/obj/x86/Debug/Job.pdb
+/home/limon/Projects/Job/Job/obj/x86/Debug/Job.csprojAssemblyReference.cache

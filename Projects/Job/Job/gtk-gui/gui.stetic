@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+  </configuration>
+  <import>
+    <widget-library name="../bin/Debug/Job.exe" internal="true" />
+  </import>
+  <widget class="Gtk.Window" id="MainWindow" design-size="564 435">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <child>
+      <widget class="Gtk.Fixed" id="fixed2">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+            <property name="MemberName" />
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.NodeView" id="mainTable">
+                <property name="MemberName" />
+                <property name="WidthRequest">500</property>
+                <property name="HeightRequest">300</property>
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="X">4</property>
+            <property name="Y">7</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="saveButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Save</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnSaveButtonClicked" />
+          </widget>
+          <packing>
+            <property name="X">78</property>
+            <property name="Y">375</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="addButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Add</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnAddButtonClicked" />
+          </widget>
+          <packing>
+            <property name="X">17</property>
+            <property name="Y">331</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="removeButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Remove</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnRemoveButtonClicked" />
+          </widget>
+          <packing>
+            <property name="X">65</property>
+            <property name="Y">331</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="loadButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Load</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnLoadButtonClicked" />
+          </widget>
+          <packing>
+            <property name="X">16</property>
+            <property name="Y">375</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="htmlButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Save as html</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnHtmlButtonClicked" />
+          </widget>
+          <packing>
+            <property name="X">430</property>
+            <property name="Y">330</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="browswerButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Open in browswer</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="OnBrowswerButtonClicked" />
+          </widget>
+          <packing>
+            <property name="X">270</property>
+            <property name="Y">331</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</stetic-interface>
